@@ -27,10 +27,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Ensure you have a secret key for sessions and CSRF protection
 app.secret_key = secrets.token_hex(16)
 
-app.config['SESSION_COOKIE_SECURE'] = True  # Ensures cookies are sent over HTTPS
-app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevents JavaScript from accessing session cookie
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Controls when cookies are sent (Lax is recommended for OAuth)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 # CSRF Protection
 csrf = CSRFProtect()
