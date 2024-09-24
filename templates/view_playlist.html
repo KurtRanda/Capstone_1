@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ playlist.name }}</h1>
+
+    <!-- Sorting Dropdown -->
+    <form id="sort-form" action="" method="GET" onsubmit="return submitSortForm();">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="sort_by">Sort by:</label>
+        <select name="sort_by" id="sort_by" required>
+            <option value="name">Name</option>
+            <option value="artist">Artist</option>
+            <option value="album">Album</option>
+            <option value="genre">Genre</option>
+        </select>
+        <input type="hidden" name="playlist_id" value="{{ playlist.spotify_id }}">
+        <button type="submit">Sort</button>
+    </form>
+
+    <script>
+        function submitSortForm() {
+            var form = document.getElementById('sort-form');
+            var sortBy = document.getElementById('sort_by').value;
+            var playlistId = "{{ playlist.spotify_id }}";
+            var actionUrl = "{{ url_for('sort_tracks', playlist_id='PLACEHOLDER', sort_by='PLACEHOLDER') }}";
+            actionUrl = actionUrl.replace('PLACEHOLDER', playlistId).replace('PLACEHOLDER', sortBy);
+            form.action = actionUrl;
+            return true;
+        }
+    </script>
+
+    {% if playlist.image_url %}
+        <img src="{{ playlist.image_url }}" alt="Playlist Image" width="200">
+    {% endif %}
+    
+    <!-- Display Search Results -->
+    {% if search_results %}
+        <h2>Search Results</h2>
+        <ul>
+        {% for track in search_results %}
+            <li>
+                <strong>{{ track.name }}</strong> by {{ track.artist }}
+                <p>Album: {{ track.album }}</p>
+                {% if track.image_url %}
+                    <img src="{{ track.image_url }}" alt="Album Art" width="100">
+                {% endif %}
+                <form action="{{ url_for('add_track_to_playlist', playlist_id=playlist.spotify_id) }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="track_id" value="{{ track.spotify_url.split('/')[-1] }}">
+                    <button type="submit">Add to Playlist</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Playlist Tracks</h2>
+    <p>Tracks count: {{ tracks | length }}</p>
+    <ul id="tracks-list">
+        {% for track in tracks %}
+        <li id="track-{{ track.spotify_id }}">
+          <strong>{{ track.name }}</strong> by {{ track.artists }}
+          <p>Album: {{ track.album }}</p>
+          {% if track.image_url %}
+          <img src="{{ track.image_url }}" alt="Album Art" width="100">
+          {% endif %}
+          <form action="{{ url_for('remove_track_from_playlist', playlist_id=playlist.spotify_id, track_id=track.spotify_id) }}" method="POST" onsubmit="removeTrack(event, '{{ track.spotify_id }}')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      
+      <script>  
+        function removeTrack(event, trackId) {
+          event.preventDefault();
+          
+          const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+          fetch(event.target.action, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'csrf_token': csrfToken  
+            })
+          })
+          .then(response => {
+            if (response.ok) {
+              document.getElementById(`track-${trackId}`).remove(); 
+            } else {
+                console.error('Failed to remove track:', response);
+            }
+          })
+          .catch(error => console.error('Error removing track:', error));
+        }
+      </script>
+{% endblock %}
+
+
+
+
+
+
+

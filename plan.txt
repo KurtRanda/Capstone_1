@@ -1,0 +1,15 @@
+app folder
+    -app.py
+    -models.py
+    -forms.py
+
+templates folder
+    -base.html
+    -add_song_to_playlist.html
+    -playlist.html
+    -new_playlist.html
+    -playlists.html
+    -songs.html
+
+static folder
+    -style.css
