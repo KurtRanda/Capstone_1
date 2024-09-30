@@ -3,7 +3,7 @@ Check out the deployed application with your own spotify login!
 https://spotmyvibes.onrender.com
 Live App URL
 Description
-SpotMyVibes is a web application that helps users discover new music based on their listening habits on Spotify. With features like viewing your top tracks, recently played music, and creating custom playlists, SpotMyVibes enhances your Spotify experience with personalized music recommendations, genre-based exploration, and more.
+SpotMyVibes is a web application that helps users discover new music based on their listening habits on Spotify. With features like viewing your top tracks, recently played music, and creating custom playlists, SpotMyVibes enhances your Spotify experience with personalized music recommendations, genre-based exploration, and more. Contact me via email to get access to the spotify API for use of this application.
 
 Features
 Login with Spotify: Users can authenticate via Spotify’s OAuth2.
