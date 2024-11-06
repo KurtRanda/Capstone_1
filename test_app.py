@@ -2,7 +2,6 @@ import pytest
 from flask import url_for
 from app import app, db, User, Playlist, Track
 from unittest.mock import patch
-
 # Fixture for setting up and tearing down the app context for each test
 @pytest.fixture
 def client():
