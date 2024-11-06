@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome, {{ profile['display_name'] }}!</h1>
+    <div class="hero">
+        <h1>Discover Music Tailored Just for You</h1>
+        <p>Explore personalized playlists, top tracks, and curated recommendations based on your unique listening habits. Dive deeper into your favorite genres, artists, and albums.</p>
+      </div>      
+    <p>Email: {{ profile['email'] }}</p>
+    {% if profile['images'] %}
+        <img src="{{ profile['images'][0]['url'] }}" alt="Profile Picture" width="120">
+    {% endif %}
+
+{% endblock %}
+
